@@ -28,6 +28,11 @@ public class LoginSteps {
         $(".title").shouldHave(text("Products"));
     }
 
+    @Then("the error message {string} is displayed")
+    public void theErrorMessageIsDisplayed(String expectedMessage) {
+        $("[data-test='error']").shouldHave(text(expectedMessage));
+    }
+
     @After
     public void tearDown() {
         closeWebDriver();
