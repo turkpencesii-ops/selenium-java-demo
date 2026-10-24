@@ -1,4 +1,4 @@
-package pages;
+package base;
 
 public class TestBase {
 }

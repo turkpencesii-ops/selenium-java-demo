@@ -1,5 +1,6 @@
 package tests;
 
+import base.TestBase;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
@@ -8,7 +9,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 
-public class LoginTest {
+public class LoginTest extends TestBase {
 
     private WebDriver driver;
     private LoginPage loginPage;

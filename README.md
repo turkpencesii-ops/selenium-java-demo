@@ -17,6 +17,7 @@ UI test automation framework for [saucedemo.com](https://www.saucedemo.com), com
 
 ```
 src/test/java/
+├── base/         # Test base class (WebDriver setup/teardown)
 ├── pages/        # Page Objects
 ├── tests/        # TestNG tests (Selenium + POM)
 ├── steps/        # Cucumber step definitions (Selenide)
