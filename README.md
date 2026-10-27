@@ -18,7 +18,7 @@ UI test automation framework for [saucedemo.com](https://www.saucedemo.com), com
 ```
 src/test/java/
 ├── base/         # Test base class (WebDriver setup/teardown)
-├── pages/        # Page Objects
+├── pages/        # Page Objects (Selenium for TestNG, Selenide for Cucumber)
 ├── tests/        # TestNG tests (Selenium + POM)
 ├── steps/        # Cucumber step definitions (Selenide)
 └── runners/      # Cucumber runner (TestNG integration)
@@ -61,7 +61,7 @@ mvn test -Dtest=CucumberRunner
 - **Parameterized steps:** Test data comes from the feature file (`{string}`), so one step covers multiple cases.
 - **Explicit Surefire includes:** The runner class does not end in `Test`, so Surefire is configured to pick up `*Runner.java` as well. Otherwise the scenarios would silently be skipped.
 
-## Roadmap
+## Roadmap - [x] Selenide-based Page Object for the Cucumber steps
 
 - [ ] Selenide-based Page Object for the Cucumber steps
 - [ ] Unit tests with JUnit 5 and mocking (JMockit)
