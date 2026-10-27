@@ -1,36 +1,38 @@
 package steps;
+
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import pages.SelenideLoginPage;
+import pages.SelenideProductsPage;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static com.codeborne.selenide.Selenide.open;
 
 public class LoginSteps {
 
+    private final SelenideLoginPage loginPage = new SelenideLoginPage();
+    private final SelenideProductsPage productsPage = new SelenideProductsPage();
+
     @Given("the user is on the login page")
     public void theUserIsOnTheLoginPage() {
-        open("https://www.saucedemo.com/");
+        loginPage.openPage();
     }
 
     @When("the user logs in with username {string} and password {string}")
     public void theUserLogsIn(String username, String password) {
-        $("#user-name").setValue(username);
-        $("#password").setValue(password);
-        $("#login-button").click();
+        loginPage.login(username, password);
     }
 
     @Then("the products page is displayed")
     public void theProductsPageIsDisplayed() {
-        $(".title").shouldHave(text("Products"));
+        productsPage.title().shouldHave(text("Products"));
     }
 
     @Then("the error message {string} is displayed")
     public void theErrorMessageIsDisplayed(String expectedMessage) {
-        $("[data-test='error']").shouldHave(text(expectedMessage));
+        loginPage.errorMessage().shouldHave(text(expectedMessage));
     }
 
     @After
@@ -38,4 +40,3 @@ public class LoginSteps {
         closeWebDriver();
     }
 }
-
