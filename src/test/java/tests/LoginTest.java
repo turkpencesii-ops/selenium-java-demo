@@ -1,22 +1,17 @@
 package tests;
 
 import base.TestBase;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 
 public class LoginTest extends TestBase {
 
-    private WebDriver driver;
     private LoginPage loginPage;
 
     @BeforeMethod
-    public void setUp() {
-        driver = new ChromeDriver();
+    public void openLoginPage() {
         loginPage = new LoginPage(driver);
         loginPage.open();
     }
@@ -39,8 +34,5 @@ public class LoginTest extends TestBase {
         Assert.assertTrue(loginPage.getErrorMessage().contains("locked out"));
     }
 
-    @AfterMethod
-    public void tearDown() {
-        driver.quit();
-    }
+
 }
