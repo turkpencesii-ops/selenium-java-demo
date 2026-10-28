@@ -12,10 +12,14 @@ UI test automation framework for [saucedemo.com](https://www.saucedemo.com), com
 | Selenide | 7.5.1 | Concise UI automation with built-in waits (Cucumber steps) |
 | Cucumber | 7.20.1 | BDD scenarios in Gherkin |
 | TestNG | 7.10.2 | Test runner |
+| JUnit 5 | 5.11.4 | Unit tests |
+| JMockit | 1.56.0 | Mocking in unit tests |
 
 ## Project Structure
 
 ```
+src/main/java/
+└── payment/      # Sample payment service (unit-tested with mocks)
 src/test/java/
 ├── base/         # Test base class (WebDriver setup/teardown)
 ├── pages/        # Page Objects (Selenium for TestNG, Selenide for Cucumber)
@@ -37,6 +41,11 @@ src/test/resources/
 - Successful login with valid credentials
 - Locked-out user sees the correct error message
 
+**Unit tests (`PaymentServiceTest`, JUnit 5 + JMockit)**
+- Successful payment returns true
+- Declined payment returns false
+- Negative amount is rejected without calling the payment gateway
+
 ## How to Run
 
 Prerequisites: Java 21, Maven, Google Chrome.
@@ -47,6 +56,9 @@ mvn test
 
 # Run only the Cucumber scenarios
 mvn test -Dtest=CucumberRunner
+
+# Run only the unit tests (no browser needed)
+mvn test -Dtest=PaymentServiceTest
 ```
 
 ## Reports
@@ -67,6 +79,7 @@ mvn test -Dtest=CucumberRunner
 - [ ] Unit tests with JUnit 5 and mocking (JMockit)
 - [ ] CI pipeline (GitLab CI)
 - [ ] Additional scenarios (cart, checkout)
+- [x] Unit tests with JUnit 5 and mocking (JMockit)
 
 **TestNG tests (`LoginTest`)**
 - Valid login redirects to the products page
