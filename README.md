@@ -1,6 +1,8 @@
 # Selenium Java Demo – UI Test Automation
 
-UI test automation framework for [saucedemo.com](https://www.saucedemo.com), combining classic TestNG tests (Page Object Model) with BDD scenarios in Cucumber and Selenide.
+[![pipeline status](https://gitlab.com/turkpencesii-ops1/selenium-java-demo/badges/main/pipeline.svg)](https://gitlab.com/turkpencesii-ops1/selenium-java-demo/-/pipelines)
+
+UI test automation framework for [saucedemo.com](https://www.saucedemo.com), combining classic TestNG tests (Page Object Model) with BDD scenarios in Cucumber and Selenide, plus unit tests with JUnit 5 and JMockit.
 
 ## Tech Stack
 
@@ -25,7 +27,8 @@ src/test/java/
 ├── pages/        # Page Objects (Selenium for TestNG, Selenide for Cucumber)
 ├── tests/        # TestNG tests (Selenium + POM)
 ├── steps/        # Cucumber step definitions (Selenide)
-└── runners/      # Cucumber runner (TestNG integration)
+├── runners/      # Cucumber runner (TestNG integration)
+└── payment/      # Unit tests (JUnit 5 + JMockit)
 src/test/resources/
 └── features/     # Gherkin feature files
 ```
@@ -33,9 +36,9 @@ src/test/resources/
 ## Test Coverage
 
 **TestNG tests (`LoginTest`)**
-- [TEST 1 – kurz beschreiben]
-- [TEST 2 – kurz beschreiben]
-- [TEST 3 – kurz beschreiben]
+- Valid login redirects to the products page
+- Invalid password shows an error message
+- Locked-out user sees an error message
 
 **Cucumber scenarios (`login.feature`)**
 - Successful login with valid credentials
@@ -61,6 +64,16 @@ mvn test -Dtest=CucumberRunner
 mvn test -Dtest=PaymentServiceTest
 ```
 
+## Continuous Integration
+
+The unit tests run automatically on every push in a [GitLab CI pipeline](https://gitlab.com/turkpencesii-ops1/selenium-java-demo/-/pipelines), defined in `.gitlab-ci.yml`:
+
+- Docker image `maven:3.9-eclipse-temurin-21`
+- Job `unit-tests` runs `mvn -B test -Dtest=PaymentServiceTest`
+- JUnit XML reports are published to GitLab's test report view
+
+The UI tests (TestNG and Cucumber) are not part of the pipeline yet, because they need a headless Chrome (see Roadmap).
+
 ## Reports
 
 - Cucumber HTML report: `target/cucumber-report.html`
@@ -72,16 +85,12 @@ mvn test -Dtest=PaymentServiceTest
 - **Declarative Gherkin:** Feature files describe behaviour, not clicks; technical details live in the step code.
 - **Parameterized steps:** Test data comes from the feature file (`{string}`), so one step covers multiple cases.
 - **Explicit Surefire includes:** The runner class does not end in `Test`, so Surefire is configured to pick up `*Runner.java` as well. Otherwise the scenarios would silently be skipped.
+- **Two test frameworks in one build:** Surefire runs TestNG and the JUnit Platform side by side through explicitly configured providers.
 
-## Roadmap - [x] Selenide-based Page Object for the Cucumber steps
+## Roadmap
 
-- [ ] Selenide-based Page Object for the Cucumber steps
-- [ ] Unit tests with JUnit 5 and mocking (JMockit)
-- [ ] CI pipeline (GitLab CI)
-- [ ] Additional scenarios (cart, checkout)
+- [x] Selenide-based Page Object for the Cucumber steps
 - [x] Unit tests with JUnit 5 and mocking (JMockit)
-
-**TestNG tests (`LoginTest`)**
-- Valid login redirects to the products page
-- Invalid password shows an error message
-- Locked-out user sees an error message
+- [x] CI pipeline for unit tests (GitLab CI)
+- [ ] Run UI and Cucumber tests in CI (headless Chrome)
+- [ ] Additional scenarios (cart, checkout)
