@@ -66,13 +66,22 @@ mvn test -Dtest=PaymentServiceTest
 
 ## Continuous Integration
 
-The unit tests run automatically on every push in a [GitLab CI pipeline](https://gitlab.com/turkpencesii-ops1/selenium-java-demo/-/pipelines), defined in `.gitlab-ci.yml`:
+All tests run automatically on every push in a [GitLab CI pipeline](https://gitlab.com/turkpencesii-ops1/selenium-java-demo/-/pipelines), defined in `.gitlab-ci.yml`. Docker image: `maven:3.9-eclipse-temurin-21`. Two jobs run in parallel in the `test` stage:
 
-- Docker image `maven:3.9-eclipse-temurin-21`
-- Job `unit-tests` runs `mvn -B test -Dtest=PaymentServiceTest`
-- JUnit XML reports are published to GitLab's test report view
+| Job | What it runs | Why |
+|---|---|---|
+| `unit-tests` | `mvn -B test -Dtest=PaymentServiceTest` | Fast feedback in seconds, no browser needed |
+| `ui-tests` | Full suite (TestNG, Cucumber, unit tests) in headless Chrome | End-to-end check of the UI flows |
 
-The UI tests (TestNG and Cucumber) are not part of the pipeline yet, because they need a headless Chrome (see Roadmap).
+- The `ui-tests` job installs Google Chrome in the container; Selenium Manager resolves the matching ChromeDriver.
+- Headless mode is switched on only in CI (`-Dheadless=true`, `-Dselenide.headless=true`), so tests still open a visible browser locally for debugging.
+- JUnit XML reports are published to GitLab's test report view. The Cucumber HTML report and Selenide failure screenshots are kept as job artifacts.
+
+Run the UI tests headless on your machine:
+
+```bash
+mvn test -Dheadless=true -Dselenide.headless=true
+```
 
 ## Reports
 
@@ -92,5 +101,6 @@ The UI tests (TestNG and Cucumber) are not part of the pipeline yet, because the
 - [x] Selenide-based Page Object for the Cucumber steps
 - [x] Unit tests with JUnit 5 and mocking (JMockit)
 - [x] CI pipeline for unit tests (GitLab CI)
-- [ ] Run UI and Cucumber tests in CI (headless Chrome)
+- [x] Run UI and Cucumber tests in CI (headless Chrome)
+- [ ] Maven dependency cache in CI for faster pipelines
 - [ ] Additional scenarios (cart, checkout)
