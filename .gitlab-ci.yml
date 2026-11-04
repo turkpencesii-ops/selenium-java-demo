@@ -11,3 +11,20 @@ unit-tests:
     when: always
     reports:
       junit: target/surefire-reports/TEST-*.xml
+
+ui-tests:
+  stage: test
+  before_script:
+    - apt-get update
+    - apt-get install -y wget
+    - wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt-get install -y ./google-chrome-stable_current_amd64.deb
+  script:
+    - mvn -B test -Dheadless=true -Dselenide.headless=true -Dselenide.browserSize=1920x1080 "-Dchromeoptions.args=--no-sandbox,--disable-dev-shm-usage"
+  artifacts:
+    when: always
+    paths:
+      - target/cucumber-report.html
+      - build/reports/tests/
+    reports:
+      junit: target/surefire-reports/TEST-*.xml
